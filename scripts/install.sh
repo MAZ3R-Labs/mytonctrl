@@ -110,24 +110,4 @@ cd $SOURCES_DIR/${repo}
 
 pip3 install -U .  # TODO: make installation from git directly
 
-echo -e "${COLOR}[4/5]${ENDC} Running mytoninstaller"
-# DEBUG
-
-parent_name=$(ps -p $PPID -o comm=)
-user=$(whoami)
-if [ "$parent_name" = "sudo" ] || [ "$parent_name" = "su" ]; then
-    user=$(logname)
-fi
-echo "User: $user"
-python3 -m mytoninstaller -u ${user} -t ${telemetry} --dump ${dump} -m ${mode}
-
-# set migrate version
-migrate_version=1
-version_dir="/home/${user}/.local/share/mytonctrl"
-version_path="${version_dir}/VERSION"
-mkdir -p ${version_dir}
-echo ${migrate_version} > ${version_path}
-chown ${user}:${user} ${version_dir} ${version_path}
-
-echo -e "${COLOR}[5/5]${ENDC} Mytonctrl installation completed"
 exit 0
